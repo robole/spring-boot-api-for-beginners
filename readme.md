@@ -1,6 +1,6 @@
 # Build an API with Spring Boot
 
-This is the code for [this tutorial](http://robole.github.io/programming/2018/07/17/restful-service.html). You can
+This is the code for [this tutorial](https://roboleary.net/java/2020/05/27/spring-boot-api.html). You can
 read that for a complete rundown of the code.
   
 ## What you’ll build
