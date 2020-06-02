@@ -9,6 +9,7 @@ import java.util.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
+@RequestMapping ("/users")
 public class UserController {
     List<User> users = new ArrayList<User>();
 
@@ -22,13 +23,13 @@ public class UserController {
 
     //GET for http://localhost:8080/users . Returns all users. Alternatively, you can use @GetMapping
     //@RequestMapping(method=GET, value="/users")
-    @GetMapping(value="/users")
+    @GetMapping
     public List<User> getUsers(){
         return users;
     }
 
     //GET for http://localhost:8080/users/id .Returns all users with the id provided
-    @GetMapping(value="/users/{id}")
+    @GetMapping(value="/{id}")
     public User getUsersById(@PathVariable("id") long id){
         User found = null;
 
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     //GET for http://localhost:8080/users?name=rob oleary .Returns all users with the name provided
-    @GetMapping(value="/users", params = "name")
+    @GetMapping(params = "name")
     public List<User> getUsersByName(@RequestParam(value="name") String name){
         List<User> filteredUsers = new ArrayList<User>();
 
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     //GET for http://localhost:8080/users?age=21 .Returns all users with the age provided
-    @GetMapping(value = "/users", params= "age")
+    @GetMapping(params= "age")
     public List<User> getUsersByAge(@RequestParam(value="age") int age){
         List<User> filteredUsers = new ArrayList<User>();
 
@@ -70,13 +71,13 @@ public class UserController {
         return filteredUsers;
     }
 
-    @PostMapping(value="users")
+    @PostMapping
     public ResponseEntity add(@RequestBody User u) {
         users.add(u);
         return new ResponseEntity(u, HttpStatus.CREATED);
     }
 
-    @PutMapping(value="users")
+    @PutMapping
     public ResponseEntity addOrUpdate(@RequestBody User u) {
         ResponseEntity response;
 
@@ -95,7 +96,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value="users/{id}")
+    @DeleteMapping(value="/{id}")
     public ResponseEntity delete(@PathVariable("id") long id) {
         boolean found = false;
 
