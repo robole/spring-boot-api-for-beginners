@@ -13,13 +13,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class UserController {
     List<User> users = new ArrayList<User>();
 
-    //We create data to use in our Controller. You can learn how to get the data from a database later, this is
-    //what is usually done!
-    public UserController(){
-        users.add(new User(1, "Rob OLeary", 21));
-        users.add(new User(2, "Angela Merkel", 20));
-        users.add(new User(3, "Tamer Osman", 20));
-    }
+    //no users
+    public UserController(){ }
 
     //GET for http://localhost:8080/users . Returns all users. Alternatively, you can use @GetMapping
     //@RequestMapping(method=GET, value="/users")
@@ -30,22 +25,27 @@ public class UserController {
 
     //GET for http://localhost:8080/users/id .Returns all users with the id provided
     @GetMapping(value="/{id}")
-    public User getUsersById(@PathVariable("id") long id){
-        User found = null;
+    public ResponseEntity getUsersById(@PathVariable("id") long id){
+        User userFound = null;
 
         for(User user: users){
             if(user.getId() == id){
-                found = user;
+                userFound = user;
                 break;
             }
         }
 
-        return found;
+        if (userFound == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        //found
+        return new ResponseEntity(userFound, HttpStatus.OK);
     }
 
     //GET for http://localhost:8080/users?name=rob oleary .Returns all users with the name provided
     @GetMapping(params = "name")
-    public List<User> getUsersByName(@RequestParam(value="name") String name){
+    public ResponseEntity getUsersByName(@RequestParam(value="name") String name){
         List<User> filteredUsers = new ArrayList<User>();
 
         for(User user: users){
@@ -54,12 +54,17 @@ public class UserController {
             }
         }
 
-        return filteredUsers;
+        if (filteredUsers.isEmpty() == true) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        //found
+        return new ResponseEntity(filteredUsers, HttpStatus.OK);
     }
 
     //GET for http://localhost:8080/users?age=21 .Returns all users with the age provided
     @GetMapping(params= "age")
-    public List<User> getUsersByAge(@RequestParam(value="age") int age){
+    public ResponseEntity getUsersByAge(@RequestParam(value="age") int age){
         List<User> filteredUsers = new ArrayList<User>();
 
         for(User user: users){
@@ -68,7 +73,12 @@ public class UserController {
             }
         }
 
-        return filteredUsers;
+        if (filteredUsers.isEmpty() == true) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        //found
+        return new ResponseEntity(filteredUsers, HttpStatus.OK);
     }
 
     @PostMapping
