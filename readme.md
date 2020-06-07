@@ -2,6 +2,9 @@
 
 This is the code for [this tutorial](https://roboleary.net/java/2020/05/27/spring-boot-api.html). You can
 read that for a complete rundown of the code.
+
+**Tests for this code are available in the branch `with-tests`.** I have kept it separate
+to be consistent with the tutorial.
   
 ## What you’ll build
  
