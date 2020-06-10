@@ -2,8 +2,8 @@ package net.roboleary.user;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 
 public class UserTest {
@@ -11,13 +11,17 @@ public class UserTest {
     User testUser1 = null;
 
     @BeforeEach
-    void init() {
-        testUser1 = getNewUser();
+    void setUp() {
+        testUser1 = createNewUser();
     }
 
-    User getNewUser(){
-        User rob = new User(1,"Rob OLeary", 33);
-        return rob;
+    @AfterEach
+    void tearDown() {
+        testUser1 = null;
+    }
+
+    User createNewUser(){
+        return new User(1,"Rob OLeary", 33);
     }
 
     //naming convention I follow is: MethodName_StateUnderTest_ExpectedBehavior

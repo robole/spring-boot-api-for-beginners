@@ -3,20 +3,26 @@ package net.roboleary.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.assertj.core.api.Assertions.assertThat;
+
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * This class demonstrates how to test a controller using MockMVC with Standalone setup. No server is run, and
@@ -24,14 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author rob oleary
  */
-@ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
     private MockMvc mvc;
-
-    @InjectMocks
-    private UserController userController;
-
-    // This object will be magically initialized by the initFields method below.
     private JacksonTester<User> jsonUser;
 
     private String basePath = "/users";
@@ -44,7 +44,7 @@ public class UserControllerTest {
         // Here we can't use @AutoConfigureJsonTesters because there isn't a Spring context
         JacksonTester.initFields(this, new ObjectMapper());
         // MockMvc standalone approach
-        mvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mvc = MockMvcBuilders.standaloneSetup(new UserController()).build();
     }
 
     public void addUser() throws Exception{
@@ -87,6 +87,7 @@ public class UserControllerTest {
 
         assertThat(response.getContentAsString()).isEqualTo(jsonUserArray);
     }
+
 
     @Test
     public void getUsers_NoUsers_ReturnOKEmptyArray() throws Exception{
